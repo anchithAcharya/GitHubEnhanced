@@ -130,4 +130,3 @@ startObserving()
 // TODO:
 // - Clean up code
 // - Check whether "web_accessible_resources" is needed in manifest.json
-// - Use branchBox.parentNode.scrollTop/branchBox.parentNode.scrollHeight to determine mappedItem
