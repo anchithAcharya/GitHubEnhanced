@@ -8,7 +8,11 @@
 	"content_scripts": [
 		{
 			"matches": ["*://github.com/*"],
-			"js": ["test.js"]
+			"js": ["test.js"],
+			"css": ["style.css"]
 		}
-	]
+	],
+
+	"content_security_policy": "default-src 'none'; font-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self'",
+	"web_accessible_resources": ["assets/*"]
 }

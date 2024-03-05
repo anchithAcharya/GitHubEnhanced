@@ -1,0 +1,10 @@
+.dropdown-arrow {
+	aspect-ratio: 1/1;
+	width: 24px;
+	padding: 8px;
+	align-self: center;
+}
+
+.dropdown-arrow svg {
+	width: inherit;
+}
