@@ -86,19 +86,37 @@ const observer = new MutationObserver((mutations) => {
 			// });
 			// branchBox.innerHTML = newHtml
 		
+			let absoluteIndex = Math.floor(branchBox.parentNode.scrollTop/branchBox.parentNode.scrollHeight*allBranches.length)
 			branchBox.childNodes.forEach(element => {
 				const elementClass = element.className.split(' ')[1]
 
-				if (divClassList.length < allBranches.length) {
-					if(divClassList.indexOf(elementClass) == -1) divClassList.push(elementClass)
-				}
+				// if (divClassList.size < allBranches.length) {
+					// if(!divClassList.has(elementClass))
+					divClassList.set(elementClass, absoluteIndex)
+				// }
 
-				const index = divClassList.indexOf(elementClass)
-				const mappedItem = flattenedHierachicalBranches.at(index)
+				// else {
+					// let prev=-1
+					// for (let i of divClassList.values()) {
+					// 	if (i != prev+1) throw new Error(`broken list: ${i} ${divClassList}`)
+					// 	else prev = i
+					// }
+				// }
+
+				const mappedIndex = divClassList.get(elementClass)
+
+				// if (mappedIndex >= allBranches.length) {
+				// 	element.remove()
+				// 	return
+				// }
+
+				const mappedItem = flattenedHierachicalBranches.at(mappedIndex)
+				// let newText = mappedIndex
 				let newText = mappedItem.name
 				if (mappedItem.isDirectory) newText = "> " + newText
 
 				element.firstChild.firstChild.firstChild.firstChild.firstChild.firstChild.childNodes[1].firstChild.textContent = newText
+				absoluteIndex++
 			});
 
 			startObserving()
@@ -115,15 +133,12 @@ function startObserving() {
 	})
 }
 
-// const allBranches = JSON.parse(localStorage.getItem("ref-selector:mattermost/mattermost:branch"))['refs']
-const allBranches = [...Array(663).keys()].map(it=>it.toString())
-for (let i=0; i<allBranches.length; i+=5) {
-	const text = allBranches[i]
-	allBranches[i] = text+"/a"
-	allBranches[i+1] = text+"/b"
-}
+const pathName = window.location.pathname.split('/')
+const refSelector = pathName[1] + '/' + pathName[2]
+const allBranches = JSON.parse(localStorage.getItem(`ref-selector:${refSelector}:branch`))['refs']
+// const allBranches = [...Array(allBranches1.length).keys()].map(it=>it.toString())
 const flattenedHierachicalBranches = flattenNodes(convertToHierarchy(allBranches), []).slice(1)
-const divClassList = []
+const divClassList = new Map()
 
 startObserving()
 
